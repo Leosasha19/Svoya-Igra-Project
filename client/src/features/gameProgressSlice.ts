@@ -1,67 +1,97 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {api} from "../api.ts";
-import {RootState} from "../redux/store/store.ts";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { api } from '../api.ts';
+import { RootState } from '../redux/store/store.ts';
+import { UserData } from './usersDataSlice.ts';
+import axios from 'axios';
 
 export interface GameProgressState {
-    score: number;
-    completedQuestions: number[];
-    questionStatus: Record<number, "correct" | "wrong">;
-    status: "idle" | "loading" | "failed";
+  score: number;
+  completedQuestions: number[];
+  questionStatus: Record<number, 'correct' | 'wrong'>;
+  status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: GameProgressState = {
-    score : 0,
-    completedQuestions: [],
-    questionStatus: {},
-    status: "idle",
+  score: 0,
+  completedQuestions: [],
+  questionStatus: {},
+  status: 'idle',
+};
+
+export interface SaveProgressPayload {
+  playerId: number;
+  score: number;
+  completedQuestions: number[];
+  questionStatus: Record<number, 'correct' | 'wrong'>;
 }
 
-export const saveProgress = createAsyncThunk("gameProgress/saveProgress",
-    async ({ playerId, score, questionStatus }: { playerId: number; score: number; questionStatus: Record<number, "correct" | "wrong">},{rejectWithValue}) => {
-        try {
-            const response = await api.put("/game-progress", {playerId, score, questionStatus})
-            return response.data;
-        } catch (error: any) {
-            console.error("Ошибка сохранения:", error);
-            return rejectWithValue(error.response?.data || "Ошибка сервера");
-        }
+interface SaveProgressResponse {
+  player: UserData;
+}
+
+export interface ApiError {
+  message: string;
+  status: number;
+}
+
+export const saveProgress = createAsyncThunk<
+  SaveProgressResponse,
+  SaveProgressPayload,
+  { rejectValue: ApiError }
+>('gameProgress/saveProgress',
+  async (saveProgressData, { rejectWithValue }) => {
+    try {
+      const response = await api.put<SaveProgressResponse>('/game-progress', saveProgressData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue({
+          message: error.response?.data?.message || 'Неизвестная ошибка',
+          status: error.response?.status || 500,
+        });
+      }
+      return rejectWithValue({
+        message: 'Ошибка при сохранение прогресса',
+        status: 503,
+      });
     }
-    );
+  },
+);
 
 const gameProgressSlice = createSlice({
-    name: "gameProgress",
-    initialState: initialState,
-    reducers: {
-        addScore: (state, action) => {
-            state.score += action.payload;
-        },
-        completeQuestion: (state, action) => {
-            const { questionId, isCorrect, newScore } = action.payload;
-            state.completedQuestions.push(questionId);
-            state.questionStatus[questionId] = isCorrect ? "correct" : "wrong";
-            state.score = newScore;
-        },
-        resetGameProgress: (state) => {
-            return initialState;
-        }
+  name: 'gameProgress',
+  initialState: initialState,
+  reducers: {
+    addScore: (state, action) => {
+      state.score += action.payload;
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(saveProgress.pending, (state) => {
-                state.status = "loading";
-            })
-            .addCase(saveProgress.fulfilled, (state) => {
-                state.status = "idle";
-            })
-            .addCase(saveProgress.rejected, (state, action: PayloadAction<string>) => {
-                state.status = "failed";
-                console.error("Ошибка:", action.payload);
-            });
-    }
-})
+    completeQuestion: (state, action) => {
+      const { questionId, isCorrect, newScore } = action.payload;
+      state.completedQuestions.push(questionId);
+      state.questionStatus[questionId] = isCorrect ? 'correct' : 'wrong';
+      state.score = newScore;
+    },
+    resetGameProgress: () => {
+      return initialState;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(saveProgress.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(saveProgress.fulfilled, (state) => {
+        state.status = 'idle';
+      })
+      .addCase(saveProgress.rejected, (state, action) => {
+        state.status = 'failed';
+        console.error('Ошибка:', action.payload);
+      });
+  },
+});
 
-export const {addScore, completeQuestion, resetGameProgress} = gameProgressSlice.actions;
+export const { addScore, completeQuestion, resetGameProgress } = gameProgressSlice.actions;
 export default gameProgressSlice.reducer;
 export const selectGameProgress = (state: RootState) => state.gameProgress;
 export const selectGameQuestionStatus = (state: RootState) => state.gameProgressQuestionStatus.questionStatus;
-export const selectGameCompletedQuestions = (state: RootState) => state.gameProgressCompletedQuestions.completedQuestions
+export const selectGameCompletedQuestions = (state: RootState) => state.gameProgressCompletedQuestions.completedQuestions;
