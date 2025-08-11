@@ -18,10 +18,14 @@ app.use('/api', updateScoreRouter);
 app.use('/api', gameProgressRouter);
 
 
-const sequelize = new Sequelize('svoyaigra', 'postgres', '1234', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+const sequelize = new Sequelize(process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    port: process.env.DB_PORT,
+  });
 
 sequelize
   .authenticate()
