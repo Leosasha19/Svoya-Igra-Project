@@ -9,7 +9,7 @@ import gameProgressRouter from './routes/gameProgressRoutes.js';
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://svoya-igra-project-1.onrender.com/'],
+  origin: ['http://localhost:5173', 'https://svoya-igra-project-1.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 }));
@@ -73,7 +73,7 @@ app.get('/game', async (req, res) => {
   }
 });
 
-const PORT = process.env.DB_PORT | 5001;
+const PORT = process.env.DB_PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
