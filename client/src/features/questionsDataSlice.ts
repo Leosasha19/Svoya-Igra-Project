@@ -31,7 +31,7 @@ export const getQuestionsData = createAsyncThunk<
   { rejectValue: ApiError }
 >('questions/getQuestions', async (_, { rejectWithValue }) => {
   try {
-    const questions = await axios.get<QuestionsData[]>(`${api}/api/game`);
+    const questions = await axios.get<QuestionsData[]>(`${api}/game`);
     return questions.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
