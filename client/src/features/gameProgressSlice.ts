@@ -3,6 +3,8 @@ import { RootState } from '../redux/store/store.ts';
 import { UserData } from './usersDataSlice.ts';
 import axios from 'axios';
 
+const api = import.meta.env.VITE_API_URL;
+
 export interface GameProgressState {
   score: number;
   completedQuestions: number[];
@@ -40,7 +42,7 @@ export const saveProgress = createAsyncThunk<
 >('gameProgress/saveProgress',
   async (saveProgressData, { rejectWithValue }) => {
     try {
-      const response = await axios.put<SaveProgressResponse>('/game-progress', saveProgressData);
+      const response = await axios.put<SaveProgressResponse>(`${api}/api/game-progress`, saveProgressData);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
