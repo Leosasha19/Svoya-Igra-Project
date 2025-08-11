@@ -3,6 +3,8 @@ import axios from 'axios';
 import { RootState } from '../redux/store/store.ts';
 import type { ApiError } from './gameProgressSlice.ts';
 
+const api = import.meta.env.VITE_API_URL;
+
 export interface QuestionsData {
   id: number;
   text: string;
@@ -29,7 +31,7 @@ export const getQuestionsData = createAsyncThunk<
   { rejectValue: ApiError }
 >('questions/getQuestions', async (_, { rejectWithValue }) => {
   try {
-    const questions = await axios<QuestionsData[]>('http://localhost:5001/game');
+    const questions = await axios<QuestionsData[]>(`${api}/game`);
     return questions.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

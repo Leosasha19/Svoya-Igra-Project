@@ -3,6 +3,8 @@ import { RootState } from '../redux/store/store.ts';
 import axios from 'axios';
 import { ApiError } from './gameProgressSlice.ts';
 
+const api = import.meta.env.VITE_API_URL;
+
 export interface UserData {
   id: number | null;
   name: string;
@@ -49,7 +51,7 @@ export const getProgress = createAsyncThunk<
 >('user/getProgressUser',
   async (playerId, { rejectWithValue }) => {
     try {
-      const response = await axios.get<ProgressResponseData>(`http://localhost:5001/api/game-progress/${playerId}`);
+      const response = await axios.get<ProgressResponseData>(`${api}/api/game-progress/${playerId}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -72,7 +74,7 @@ export const saveUser = createAsyncThunk<
 >('user/saveUser',
   async (user, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5001/api/players', user);
+      const response = await axios.post(`${api}/api/players`, user);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

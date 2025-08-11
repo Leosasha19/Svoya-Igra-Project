@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '../api.ts';
 import { RootState } from '../redux/store/store.ts';
 import { UserData } from './usersDataSlice.ts';
 import axios from 'axios';
@@ -41,7 +40,7 @@ export const saveProgress = createAsyncThunk<
 >('gameProgress/saveProgress',
   async (saveProgressData, { rejectWithValue }) => {
     try {
-      const response = await api.put<SaveProgressResponse>('/game-progress', saveProgressData);
+      const response = await axios.put<SaveProgressResponse>('/game-progress', saveProgressData);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
