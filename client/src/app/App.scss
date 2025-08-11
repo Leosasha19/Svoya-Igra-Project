@@ -3,6 +3,7 @@
   margin: 0 auto;
   text-align: center;
 }
+
 .main_container {
   height: 812px;
   width: 1440px;
@@ -10,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   &__startsCard {
     flex-direction: column;
     display: flex;
@@ -19,6 +21,7 @@
     border: 1px solid black;
     border-radius: 3px;
     background-color: #3166e4;
+
     &__name {
       width: 100%;
       display: flex;
@@ -30,46 +33,54 @@
       font-weight: bold;
       font-size: 25px;
     }
+
     &__pictureMale {
       margin-top: 40px;
       background-color: white;
       width: 200px;
       height: 200px;
-      background-image: url("/Users/a/Desktop/My Projects/Svoya__IGRA/Svoya-Igra-Project/client/src/assets/mainIcons/male.png");
+      background-image: url("../src/assets/mainIcons/male.png");
       background-size: cover;
     }
+
     &__pictureFemale {
       margin-top: 40px;
       background-color: white;
       width: 200px;
       height: 200px;
-      background-image: url("/Users/a/Desktop/My Projects/Svoya__IGRA/Svoya-Igra-Project/client/src/assets/mainIcons/female.png");
+      background-image: url("../src/assets/mainIcons/female.png");
       background-size: cover;
     }
+
     &__gender {
       margin-top: 50px;
       margin-bottom: 50px;
       display: flex;
       gap: 40px;
+
       &__male {
         width: 40px;
         height: 40px;
       }
-      &__maleActiv{
+
+      &__maleActiv {
         background-color: #658ae1;
         width: 40px;
         height: 40px;
       }
+
       &__female {
         width: 40px;
         height: 40px;
       }
-      &__femaleActiv{
+
+      &__femaleActiv {
         background-color: #658ae1;
         width: 40px;
         height: 40px;
       }
     }
+
     &__entranceButton {
       background-color: #1344b5;
       color: white;
@@ -77,6 +88,7 @@
       width: 444px;
       font-weight: bold;
     }
+
     &__placeName {
       height: 35px;
       width: 425px;
@@ -91,9 +103,11 @@
       color: #bfbebe;
       outline: none;
     }
+
     &__placeName:focus {
       border: 1px solid #bfbebe;
     }
+
     &__placeName::placeholder {
       color: #bfbebe;
       font-size: 20px;
