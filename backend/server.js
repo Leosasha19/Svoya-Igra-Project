@@ -39,6 +39,16 @@ sequelize.sync({ force: false })
 
 const Player = PlayerModel(sequelize, Sequelize.DataTypes);
 
+app.get('/api/debug/create-test-player', async (req, res) => {
+  try {
+    const player = await Player.create({ name: 'Тестовый игрок', score: 0 });
+    res.status(201).json(player);
+  } catch (error) {
+    console.error('Ошибка при создании тестового игрока:', error.message);
+    res.status(500).json({ error: 'Не удалось создать игрока' });
+  }
+});
+
 app.post('/api/players', async (req, res) => {
   try {
     const { name, score } = req.body;
