@@ -4,7 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Sequelize } from 'sequelize';
 import PlayerModel from './db/models/player.js';
-import GameProgressModel from './db/models/gameprogress.ts';
+import GameProgressModel from './db/models/gameprogress.js';
 import updateScoreRouter from './routes/PlayerRoutes.js';
 import gameProgressRouter from './routes/gameProgressRoutes.js';
 

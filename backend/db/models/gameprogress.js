@@ -1,8 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize';
+
+export default (sequelize, DataTypes) => {
   class GameProgress extends Model {
     /**
      * Helper method for defining associations.
@@ -11,13 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      GameProgress.belongsTo(models.Player, {foreignKey: 'userId'});
-      GameProgress.belongsTo(models.Question, {foreignKey: 'questionId'});
+      GameProgress.belongsTo(models.Player, { foreignKey: 'userId' });
+      GameProgress.belongsTo(models.Question, { foreignKey: 'questionId' });
     }
   }
+
   GameProgress.init({
     status: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   }, {
     sequelize,
     modelName: 'GameProgress',
