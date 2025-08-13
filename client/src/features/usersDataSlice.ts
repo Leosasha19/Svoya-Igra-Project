@@ -31,12 +31,10 @@ interface ProgressResponseData {
 }
 
 interface SaveProgressData {
-  player: {
-    id: number,
-    name: string,
-    score: number,
-    questionStatus: null,
-  };
+  id: number,
+  name: string,
+  score: number,
+  questionStatus: null,
 }
 
 interface saveUser {
@@ -111,9 +109,9 @@ export const UserDataSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(saveUser.fulfilled, (state, action) => {
-        state.id = action.payload.player.id;
-        state.name = action.payload.player.name;
-        state.score = action.payload.player.score;
+        state.id = action.payload.id;
+        state.name = action.payload.name;
+        state.score = action.payload.score;
       })
       .addCase(saveUser.rejected, (_, action) => {
         console.error('Ошибка сохранения:', action.payload);

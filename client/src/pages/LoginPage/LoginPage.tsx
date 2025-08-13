@@ -22,8 +22,8 @@ function LoginPage() {
     if (inputUserName.trim()) {
       try {
         const result = await dispatch(saveUser({ name: inputUserName, score: 0 })).unwrap();
-        if (result.player.id) {
-          await dispatch(getProgress(result.player.id));
+        if (result.id) {
+          await dispatch(getProgress(result.id));
         }
         navigate('/game');
       } catch (error) {
