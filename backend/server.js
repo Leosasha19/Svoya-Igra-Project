@@ -44,7 +44,7 @@ const Question = QuestionModel(sequelize, Sequelize.DataTypes);
 app.use('/api', gameProgressRouter);
 app.use('/api', playerRouter);
 
-sequelize.sync({ force: false })
+sequelize.sync({ force: true })
   .then(() => console.log('Database synchronized'))
   .catch(err => console.error('Error during synchronization:', err));
 
