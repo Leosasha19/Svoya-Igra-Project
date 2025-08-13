@@ -7,6 +7,7 @@ import PlayerModel from './db/models/player.js';
 import GameProgressModel from './db/models/gameprogress.js';
 import createPlayerRouter from './routes/PlayerRoutes.js';
 import createGameProgressRouter from './routes/gameProgressRoutes.js';
+import QuestionModel from './db/models/question.js';
 
 const app = express();
 app.use(cors({
@@ -38,6 +39,8 @@ GameProgress.belongsTo(Player, { foreignKey: 'userId' });
 
 const gameProgressRouter = createGameProgressRouter({ Player });
 const playerRouter = createPlayerRouter({ Player });
+const Question = QuestionModel(sequelize, Sequelize.DataTypes);
+
 app.use('/api', gameProgressRouter);
 app.use('/api', playerRouter);
 

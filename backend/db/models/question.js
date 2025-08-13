@@ -1,8 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize';
+
+export default (sequelize, DataTypes) => {
   class Question extends Model {
     /**
      * Helper method for defining associations.
@@ -11,25 +9,26 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.PlayerQuestion, {foreignKey: 'questionId',as:'questionLinks'});
+      this.hasMany(models.PlayerQuestion, { foreignKey: 'questionId', as: 'questionLinks' });
     }
   }
+
   Question.init({
     text: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     answer: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     points: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
   }, {
     sequelize,
