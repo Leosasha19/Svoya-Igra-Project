@@ -73,7 +73,7 @@ export const saveUser = createAsyncThunk<
   async (user, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${api}/api/players`, user);
-      return response.data;
+      return response.data.player;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue({

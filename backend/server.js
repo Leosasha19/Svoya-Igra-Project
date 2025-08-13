@@ -39,31 +39,24 @@ sequelize.sync({ force: false })
 
 const Player = PlayerModel(sequelize, Sequelize.DataTypes);
 
-app.get('/api/debug/create-test-player', async (req, res) => {
-  try {
-    const player = await Player.create({ name: 'Тестовый игрок', score: 0 });
-    res.status(201).json(player);
-  } catch (error) {
-    console.error('Ошибка при создании тестового игрока:', error.message);
-    res.status(500).json({ error: 'Не удалось создать игрока' });
-  }
-});
-
 app.post('/api/players', async (req, res) => {
   try {
     const { name, score } = req.body;
     if (!name) {
       return res.status(400).json({ error: 'Имя обязательно' });
     }
-    const existingPlayer = await Player.findOne({ where: { name } });
-    if (existingPlayer) {
-      return res.status(200).json({
-        message: 'Игрок найден',
-        player: existingPlayer,
+    let player = await Player.findOne({ where: { name } });
+    if (!player) {
+      player = await Player.create({ name, score });
+      return res.status(201).json({
+        message: 'Игрок создан',
+        player,
       });
     }
-    const newUser = await Player.create({ name, score });
-    res.status(201).json(newUser);
+    res.status(200).json({
+      message: 'Игрок найден',
+      player,
+    });
   } catch (error) {
     console.error('Ошибка сохранения пользователя:', error.message);
     console.error('Full error details:', error);
