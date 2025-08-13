@@ -33,6 +33,7 @@ export default (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Question',
+    freezeTableName: true,
   });
   return Question;
 };
