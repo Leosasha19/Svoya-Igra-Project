@@ -75,13 +75,11 @@ app.post('/api/players', async (req, res) => {
 
 app.get('/game', async (req, res) => {
   try {
-    const questions = await sequelize.query('SELECT * FROM "Questions"', {
-      type: Sequelize.QueryTypes.SELECT,
-    });
+    const questions = await Question.findAll();
     res.json(questions);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Failed to fetch players' });
+    res.status(500).json({ error: 'Failed to fetch questions' });
   }
 });
 
