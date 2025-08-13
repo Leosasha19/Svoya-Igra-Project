@@ -5,8 +5,8 @@ import bodyParser from 'body-parser';
 import { Sequelize } from 'sequelize';
 import PlayerModel from './db/models/player.js';
 import GameProgressModel from './db/models/gameprogress.js';
-import updateScoreRouter from './routes/PlayerRoutes.js';
-import gameProgressRouter from './routes/gameProgressRoutes.js';
+import createPlayerRouter from './routes/PlayerRoutes.js';
+import createGameProgressRouter from './routes/gameProgressRoutes.js';
 
 const app = express();
 app.use(cors({
@@ -16,9 +16,6 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(express.json());
-app.use('/api', updateScoreRouter);
-app.use('/api', gameProgressRouter);
-
 
 const sequelize = new Sequelize(process.env.DB_NAME,
   process.env.DB_USERNAME,
@@ -38,6 +35,11 @@ const Player = PlayerModel(sequelize, Sequelize.DataTypes);
 const GameProgress = GameProgressModel(sequelize, Sequelize.DataTypes);
 
 GameProgress.belongsTo(Player, { foreignKey: 'userId' });
+
+const gameProgressRouter = createGameProgressRouter({ Player });
+const playerRouter = createPlayerRouter({ Player });
+app.use('/api', gameProgressRouter);
+app.use('/api', playerRouter);
 
 sequelize.sync({ force: false })
   .then(() => console.log('Database synchronized'))
