@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Sequelize } from 'sequelize';
 import PlayerModel from './db/models/player.js';
+import GameProgressModel from './db/models/gameProgress.js';
 import updateScoreRouter from './routes/PlayerRoutes.js';
 import gameProgressRouter from './routes/gameProgressRoutes.js';
 
@@ -33,11 +34,14 @@ sequelize
   .then(() => console.log('Connected to PostgreSQL'))
   .catch((err) => console.error('Unable to connect to PostgreSQL:', err));
 
+const Player = PlayerModel(sequelize, Sequelize.DataTypes);
+const GameProgress = GameProgressModel(sequelize, Sequelize.DataTypes);
+
+GameProgress.belongsTo(Player, { foreignKey: 'userId' });
+
 sequelize.sync({ force: false })
   .then(() => console.log('Database synchronized'))
   .catch(err => console.error('Error during synchronization:', err));
-
-const Player = PlayerModel(sequelize, Sequelize.DataTypes);
 
 app.post('/api/players', async (req, res) => {
   try {
