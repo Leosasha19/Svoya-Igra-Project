@@ -15,8 +15,10 @@ export default (sequelize, DataTypes) => {
   }
 
   GameProgress.init({
-    status: DataTypes.STRING,
-    allowNull: false,
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   }, {
     sequelize,
     modelName: 'GameProgress',
